@@ -24,6 +24,9 @@ func NewServer(store db.Store, pool *pgxpool.Pool) (*Server, error) {
 
 	router.MaxMultipartMemory = 100 << 2
 
+	RouteServer := NewRouteServer(store, router, pool)
+	RouteServer.ApiRoutes()
+
 	log.Println("testing total routes", len(server.Router.Routes()))
 
 	return server, nil
