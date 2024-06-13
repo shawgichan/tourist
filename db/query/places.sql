@@ -32,3 +32,10 @@ INSERT INTO places (
     $14,
     $15
 ) RETURNING id;
+
+
+-- name: GetPlace :one
+SELECT * FROM places WHERE id = $1;
+
+-- name: GetPlaces :many
+SELECT * FROM places;

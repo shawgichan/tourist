@@ -88,3 +88,72 @@ func (q *Queries) CreatePlace(ctx context.Context, arg CreatePlaceParams) (int64
 	err := row.Scan(&id)
 	return id, err
 }
+
+const getPlace = `-- name: GetPlace :one
+SELECT id, name, description, opening_hours, closing_hours, rating, ticket_category, ticket_price, location_id, place_type_id, created_at, updated_at, cover_image_url, profile_image_url, resturant_branch_id, preference_match FROM places WHERE id = $1
+`
+
+func (q *Queries) GetPlace(ctx context.Context, id int64) (Place, error) {
+	row := q.db.QueryRow(ctx, getPlace, id)
+	var i Place
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.OpeningHours,
+		&i.ClosingHours,
+		&i.Rating,
+		&i.TicketCategory,
+		&i.TicketPrice,
+		&i.LocationID,
+		&i.PlaceTypeID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.CoverImageUrl,
+		&i.ProfileImageUrl,
+		&i.ResturantBranchID,
+		&i.PreferenceMatch,
+	)
+	return i, err
+}
+
+const getPlaces = `-- name: GetPlaces :many
+SELECT id, name, description, opening_hours, closing_hours, rating, ticket_category, ticket_price, location_id, place_type_id, created_at, updated_at, cover_image_url, profile_image_url, resturant_branch_id, preference_match FROM places
+`
+
+func (q *Queries) GetPlaces(ctx context.Context) ([]Place, error) {
+	rows, err := q.db.Query(ctx, getPlaces)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Place
+	for rows.Next() {
+		var i Place
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.OpeningHours,
+			&i.ClosingHours,
+			&i.Rating,
+			&i.TicketCategory,
+			&i.TicketPrice,
+			&i.LocationID,
+			&i.PlaceTypeID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.CoverImageUrl,
+			&i.ProfileImageUrl,
+			&i.ResturantBranchID,
+			&i.PreferenceMatch,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
