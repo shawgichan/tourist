@@ -27,5 +27,6 @@ func (server *RouteServer) ApiRoutes() {
 	d := server.Router.Group("api/places")
 	{
 		d.POST("/createNewPlace", places.CreateNewPlace)
+		d.GET("/getAllPlaces", places.GetAllPlacesPlace)
 	}
 }

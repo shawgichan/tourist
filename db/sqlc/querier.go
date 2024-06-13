@@ -10,6 +10,8 @@ import (
 
 type Querier interface {
 	CreatePlace(ctx context.Context, arg CreatePlaceParams) (int64, error)
+	GetPlace(ctx context.Context, id int64) (Place, error)
+	GetPlaces(ctx context.Context) ([]Place, error)
 }
 
 var _ Querier = (*Queries)(nil)
