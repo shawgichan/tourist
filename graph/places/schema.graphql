@@ -1,0 +1,18 @@
+type Sample {
+    id: Int,
+    title: String,
+    title_ar: String,
+    }
+
+# Queries
+type Query {
+    getSampleById(id: Int!): Sample!
+    getAllSamples: [Sample!]!
+}
+
+
+
+
+
+
+
