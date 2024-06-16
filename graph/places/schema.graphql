@@ -1,13 +1,54 @@
-type Sample {
-    id: Int,
-    title: String,
-    title_ar: String,
-    }
+scalar Time
 
+type DateObj {
+    from: Time,
+    to: Time,
+}
+
+type LocationObj {
+    city: String,
+    Lat: Float,
+    Lng: Float,
+}
+
+type TagObj {
+    id: Int,
+    name: String,
+    color: String,
+}
+
+type FeatureObj {
+    id: Int,
+    icon: String,
+    name: String,
+    value: String,
+}
+
+type SimEventsObj {
+    id: Int,
+    name: String,
+    image: String,
+    location: LocationObj,
+    rating: Float,
+    date: DateObj,
+}
+
+type DetailsPage {
+    id: Int,
+    name: String,
+    image: String,
+    date: DateObj,
+    time: DateObj,
+    description: String,
+    location: LocationObj,
+    tags: [TagObj],
+    features: [FeatureObj],
+    similarEvents: [SimEventsObj],
+}
 # Queries
 type Query {
-    getSampleById(id: Int!): Sample!
-    getAllSamples: [Sample!]!
+    getDetailsPageById(id: Int!): DetailsPage!
+    getAllDetailsPage: [DetailsPage!]!
 }
 
 

@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
@@ -45,21 +46,61 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
-	Query struct {
-		GetAllSamples func(childComplexity int) int
-		GetSampleByID func(childComplexity int, id int) int
+	DateObj struct {
+		From func(childComplexity int) int
+		To   func(childComplexity int) int
 	}
 
-	Sample struct {
-		ID      func(childComplexity int) int
-		Title   func(childComplexity int) int
-		TitleAr func(childComplexity int) int
+	DetailsPage struct {
+		Date          func(childComplexity int) int
+		Description   func(childComplexity int) int
+		Features      func(childComplexity int) int
+		ID            func(childComplexity int) int
+		Image         func(childComplexity int) int
+		Location      func(childComplexity int) int
+		Name          func(childComplexity int) int
+		SimilarEvents func(childComplexity int) int
+		Tags          func(childComplexity int) int
+		Time          func(childComplexity int) int
+	}
+
+	FeatureObj struct {
+		ID    func(childComplexity int) int
+		Icon  func(childComplexity int) int
+		Name  func(childComplexity int) int
+		Value func(childComplexity int) int
+	}
+
+	LocationObj struct {
+		City func(childComplexity int) int
+		Lat  func(childComplexity int) int
+		Lng  func(childComplexity int) int
+	}
+
+	Query struct {
+		GetAllDetailsPage  func(childComplexity int) int
+		GetDetailsPageByID func(childComplexity int, id int) int
+	}
+
+	SimEventsObj struct {
+		Date     func(childComplexity int) int
+		ID       func(childComplexity int) int
+		Image    func(childComplexity int) int
+		Location func(childComplexity int) int
+		Name     func(childComplexity int) int
+		Rating   func(childComplexity int) int
+	}
+
+	TagObj struct {
+		Color func(childComplexity int) int
+		ID    func(childComplexity int) int
+		Name  func(childComplexity int) int
 	}
 }
 
 type QueryResolver interface {
-	GetSampleByID(ctx context.Context, id int) (*Sample, error)
-	GetAllSamples(ctx context.Context) ([]Sample, error)
+	GetDetailsPageByID(ctx context.Context, id int) (*DetailsPage, error)
+	GetAllDetailsPage(ctx context.Context) ([]DetailsPage, error)
 }
 
 type executableSchema struct {
@@ -81,45 +122,220 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "Query.getAllSamples":
-		if e.complexity.Query.GetAllSamples == nil {
+	case "DateObj.from":
+		if e.complexity.DateObj.From == nil {
 			break
 		}
 
-		return e.complexity.Query.GetAllSamples(childComplexity), true
+		return e.complexity.DateObj.From(childComplexity), true
 
-	case "Query.getSampleById":
-		if e.complexity.Query.GetSampleByID == nil {
+	case "DateObj.to":
+		if e.complexity.DateObj.To == nil {
 			break
 		}
 
-		args, err := ec.field_Query_getSampleById_args(context.TODO(), rawArgs)
+		return e.complexity.DateObj.To(childComplexity), true
+
+	case "DetailsPage.date":
+		if e.complexity.DetailsPage.Date == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.Date(childComplexity), true
+
+	case "DetailsPage.description":
+		if e.complexity.DetailsPage.Description == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.Description(childComplexity), true
+
+	case "DetailsPage.features":
+		if e.complexity.DetailsPage.Features == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.Features(childComplexity), true
+
+	case "DetailsPage.id":
+		if e.complexity.DetailsPage.ID == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.ID(childComplexity), true
+
+	case "DetailsPage.image":
+		if e.complexity.DetailsPage.Image == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.Image(childComplexity), true
+
+	case "DetailsPage.location":
+		if e.complexity.DetailsPage.Location == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.Location(childComplexity), true
+
+	case "DetailsPage.name":
+		if e.complexity.DetailsPage.Name == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.Name(childComplexity), true
+
+	case "DetailsPage.similarEvents":
+		if e.complexity.DetailsPage.SimilarEvents == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.SimilarEvents(childComplexity), true
+
+	case "DetailsPage.tags":
+		if e.complexity.DetailsPage.Tags == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.Tags(childComplexity), true
+
+	case "DetailsPage.time":
+		if e.complexity.DetailsPage.Time == nil {
+			break
+		}
+
+		return e.complexity.DetailsPage.Time(childComplexity), true
+
+	case "FeatureObj.id":
+		if e.complexity.FeatureObj.ID == nil {
+			break
+		}
+
+		return e.complexity.FeatureObj.ID(childComplexity), true
+
+	case "FeatureObj.icon":
+		if e.complexity.FeatureObj.Icon == nil {
+			break
+		}
+
+		return e.complexity.FeatureObj.Icon(childComplexity), true
+
+	case "FeatureObj.name":
+		if e.complexity.FeatureObj.Name == nil {
+			break
+		}
+
+		return e.complexity.FeatureObj.Name(childComplexity), true
+
+	case "FeatureObj.value":
+		if e.complexity.FeatureObj.Value == nil {
+			break
+		}
+
+		return e.complexity.FeatureObj.Value(childComplexity), true
+
+	case "LocationObj.city":
+		if e.complexity.LocationObj.City == nil {
+			break
+		}
+
+		return e.complexity.LocationObj.City(childComplexity), true
+
+	case "LocationObj.Lat":
+		if e.complexity.LocationObj.Lat == nil {
+			break
+		}
+
+		return e.complexity.LocationObj.Lat(childComplexity), true
+
+	case "LocationObj.Lng":
+		if e.complexity.LocationObj.Lng == nil {
+			break
+		}
+
+		return e.complexity.LocationObj.Lng(childComplexity), true
+
+	case "Query.getAllDetailsPage":
+		if e.complexity.Query.GetAllDetailsPage == nil {
+			break
+		}
+
+		return e.complexity.Query.GetAllDetailsPage(childComplexity), true
+
+	case "Query.getDetailsPageById":
+		if e.complexity.Query.GetDetailsPageByID == nil {
+			break
+		}
+
+		args, err := ec.field_Query_getDetailsPageById_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Query.GetSampleByID(childComplexity, args["id"].(int)), true
+		return e.complexity.Query.GetDetailsPageByID(childComplexity, args["id"].(int)), true
 
-	case "Sample.id":
-		if e.complexity.Sample.ID == nil {
+	case "SimEventsObj.date":
+		if e.complexity.SimEventsObj.Date == nil {
 			break
 		}
 
-		return e.complexity.Sample.ID(childComplexity), true
+		return e.complexity.SimEventsObj.Date(childComplexity), true
 
-	case "Sample.title":
-		if e.complexity.Sample.Title == nil {
+	case "SimEventsObj.id":
+		if e.complexity.SimEventsObj.ID == nil {
 			break
 		}
 
-		return e.complexity.Sample.Title(childComplexity), true
+		return e.complexity.SimEventsObj.ID(childComplexity), true
 
-	case "Sample.title_ar":
-		if e.complexity.Sample.TitleAr == nil {
+	case "SimEventsObj.image":
+		if e.complexity.SimEventsObj.Image == nil {
 			break
 		}
 
-		return e.complexity.Sample.TitleAr(childComplexity), true
+		return e.complexity.SimEventsObj.Image(childComplexity), true
+
+	case "SimEventsObj.location":
+		if e.complexity.SimEventsObj.Location == nil {
+			break
+		}
+
+		return e.complexity.SimEventsObj.Location(childComplexity), true
+
+	case "SimEventsObj.name":
+		if e.complexity.SimEventsObj.Name == nil {
+			break
+		}
+
+		return e.complexity.SimEventsObj.Name(childComplexity), true
+
+	case "SimEventsObj.rating":
+		if e.complexity.SimEventsObj.Rating == nil {
+			break
+		}
+
+		return e.complexity.SimEventsObj.Rating(childComplexity), true
+
+	case "TagObj.color":
+		if e.complexity.TagObj.Color == nil {
+			break
+		}
+
+		return e.complexity.TagObj.Color(childComplexity), true
+
+	case "TagObj.id":
+		if e.complexity.TagObj.ID == nil {
+			break
+		}
+
+		return e.complexity.TagObj.ID(childComplexity), true
+
+	case "TagObj.name":
+		if e.complexity.TagObj.Name == nil {
+			break
+		}
+
+		return e.complexity.TagObj.Name(childComplexity), true
 
 	}
 	return 0, false
@@ -244,7 +460,7 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_getSampleById_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Query_getDetailsPageById_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 int
@@ -297,8 +513,8 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Query_getSampleById(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_getSampleById(ctx, field)
+func (ec *executionContext) _DateObj_from(ctx context.Context, field graphql.CollectedField, obj *DateObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DateObj_from(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -311,7 +527,838 @@ func (ec *executionContext) _Query_getSampleById(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetSampleByID(rctx, fc.Args["id"].(int))
+		return obj.From, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DateObj_from(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DateObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DateObj_to(ctx context.Context, field graphql.CollectedField, obj *DateObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DateObj_to(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.To, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DateObj_to(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DateObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_id(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_name(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_image(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_image(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Image, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_image(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_date(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_date(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Date, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*DateObj)
+	fc.Result = res
+	return ec.marshalODateObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDateObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_date(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "from":
+				return ec.fieldContext_DateObj_from(ctx, field)
+			case "to":
+				return ec.fieldContext_DateObj_to(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DateObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_time(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_time(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Time, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*DateObj)
+	fc.Result = res
+	return ec.marshalODateObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDateObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_time(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "from":
+				return ec.fieldContext_DateObj_from(ctx, field)
+			case "to":
+				return ec.fieldContext_DateObj_to(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DateObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_description(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_description(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_description(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_location(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_location(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Location, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*LocationObj)
+	fc.Result = res
+	return ec.marshalOLocationObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐLocationObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_location(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "city":
+				return ec.fieldContext_LocationObj_city(ctx, field)
+			case "Lat":
+				return ec.fieldContext_LocationObj_Lat(ctx, field)
+			case "Lng":
+				return ec.fieldContext_LocationObj_Lng(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type LocationObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_tags(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_tags(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tags, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*TagObj)
+	fc.Result = res
+	return ec.marshalOTagObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐTagObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_tags(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_TagObj_id(ctx, field)
+			case "name":
+				return ec.fieldContext_TagObj_name(ctx, field)
+			case "color":
+				return ec.fieldContext_TagObj_color(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TagObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_features(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_features(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Features, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*FeatureObj)
+	fc.Result = res
+	return ec.marshalOFeatureObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐFeatureObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_features(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_FeatureObj_id(ctx, field)
+			case "icon":
+				return ec.fieldContext_FeatureObj_icon(ctx, field)
+			case "name":
+				return ec.fieldContext_FeatureObj_name(ctx, field)
+			case "value":
+				return ec.fieldContext_FeatureObj_value(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FeatureObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _DetailsPage_similarEvents(ctx context.Context, field graphql.CollectedField, obj *DetailsPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_DetailsPage_similarEvents(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SimilarEvents, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*SimEventsObj)
+	fc.Result = res
+	return ec.marshalOSimEventsObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_DetailsPage_similarEvents(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "DetailsPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_SimEventsObj_id(ctx, field)
+			case "name":
+				return ec.fieldContext_SimEventsObj_name(ctx, field)
+			case "image":
+				return ec.fieldContext_SimEventsObj_image(ctx, field)
+			case "location":
+				return ec.fieldContext_SimEventsObj_location(ctx, field)
+			case "rating":
+				return ec.fieldContext_SimEventsObj_rating(ctx, field)
+			case "date":
+				return ec.fieldContext_SimEventsObj_date(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type SimEventsObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FeatureObj_id(ctx context.Context, field graphql.CollectedField, obj *FeatureObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FeatureObj_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FeatureObj_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FeatureObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FeatureObj_icon(ctx context.Context, field graphql.CollectedField, obj *FeatureObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FeatureObj_icon(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Icon, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FeatureObj_icon(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FeatureObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FeatureObj_name(ctx context.Context, field graphql.CollectedField, obj *FeatureObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FeatureObj_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FeatureObj_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FeatureObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FeatureObj_value(ctx context.Context, field graphql.CollectedField, obj *FeatureObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FeatureObj_value(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Value, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FeatureObj_value(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FeatureObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LocationObj_city(ctx context.Context, field graphql.CollectedField, obj *LocationObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LocationObj_city(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.City, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LocationObj_city(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LocationObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LocationObj_Lat(ctx context.Context, field graphql.CollectedField, obj *LocationObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LocationObj_Lat(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Lat, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LocationObj_Lat(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LocationObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LocationObj_Lng(ctx context.Context, field graphql.CollectedField, obj *LocationObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LocationObj_Lng(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Lng, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LocationObj_Lng(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LocationObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_getDetailsPageById(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_getDetailsPageById(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetDetailsPageByID(rctx, fc.Args["id"].(int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -323,12 +1370,12 @@ func (ec *executionContext) _Query_getSampleById(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*Sample)
+	res := resTmp.(*DetailsPage)
 	fc.Result = res
-	return ec.marshalNSample2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSample(ctx, field.Selections, res)
+	return ec.marshalNDetailsPage2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDetailsPage(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_getSampleById(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_getDetailsPageById(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -337,13 +1384,27 @@ func (ec *executionContext) fieldContext_Query_getSampleById(ctx context.Context
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Sample_id(ctx, field)
-			case "title":
-				return ec.fieldContext_Sample_title(ctx, field)
-			case "title_ar":
-				return ec.fieldContext_Sample_title_ar(ctx, field)
+				return ec.fieldContext_DetailsPage_id(ctx, field)
+			case "name":
+				return ec.fieldContext_DetailsPage_name(ctx, field)
+			case "image":
+				return ec.fieldContext_DetailsPage_image(ctx, field)
+			case "date":
+				return ec.fieldContext_DetailsPage_date(ctx, field)
+			case "time":
+				return ec.fieldContext_DetailsPage_time(ctx, field)
+			case "description":
+				return ec.fieldContext_DetailsPage_description(ctx, field)
+			case "location":
+				return ec.fieldContext_DetailsPage_location(ctx, field)
+			case "tags":
+				return ec.fieldContext_DetailsPage_tags(ctx, field)
+			case "features":
+				return ec.fieldContext_DetailsPage_features(ctx, field)
+			case "similarEvents":
+				return ec.fieldContext_DetailsPage_similarEvents(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Sample", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type DetailsPage", field.Name)
 		},
 	}
 	defer func() {
@@ -353,15 +1414,15 @@ func (ec *executionContext) fieldContext_Query_getSampleById(ctx context.Context
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_getSampleById_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Query_getDetailsPageById_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_getAllSamples(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_getAllSamples(ctx, field)
+func (ec *executionContext) _Query_getAllDetailsPage(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_getAllDetailsPage(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -374,7 +1435,7 @@ func (ec *executionContext) _Query_getAllSamples(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetAllSamples(rctx)
+		return ec.resolvers.Query().GetAllDetailsPage(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -386,12 +1447,12 @@ func (ec *executionContext) _Query_getAllSamples(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]Sample)
+	res := resTmp.([]DetailsPage)
 	fc.Result = res
-	return ec.marshalNSample2ᚕgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSampleᚄ(ctx, field.Selections, res)
+	return ec.marshalNDetailsPage2ᚕgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDetailsPageᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_getAllSamples(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_getAllDetailsPage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -400,13 +1461,27 @@ func (ec *executionContext) fieldContext_Query_getAllSamples(_ context.Context, 
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Sample_id(ctx, field)
-			case "title":
-				return ec.fieldContext_Sample_title(ctx, field)
-			case "title_ar":
-				return ec.fieldContext_Sample_title_ar(ctx, field)
+				return ec.fieldContext_DetailsPage_id(ctx, field)
+			case "name":
+				return ec.fieldContext_DetailsPage_name(ctx, field)
+			case "image":
+				return ec.fieldContext_DetailsPage_image(ctx, field)
+			case "date":
+				return ec.fieldContext_DetailsPage_date(ctx, field)
+			case "time":
+				return ec.fieldContext_DetailsPage_time(ctx, field)
+			case "description":
+				return ec.fieldContext_DetailsPage_description(ctx, field)
+			case "location":
+				return ec.fieldContext_DetailsPage_location(ctx, field)
+			case "tags":
+				return ec.fieldContext_DetailsPage_tags(ctx, field)
+			case "features":
+				return ec.fieldContext_DetailsPage_features(ctx, field)
+			case "similarEvents":
+				return ec.fieldContext_DetailsPage_similarEvents(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Sample", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type DetailsPage", field.Name)
 		},
 	}
 	return fc, nil
@@ -541,8 +1616,8 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Sample_id(ctx context.Context, field graphql.CollectedField, obj *Sample) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Sample_id(ctx, field)
+func (ec *executionContext) _SimEventsObj_id(ctx context.Context, field graphql.CollectedField, obj *SimEventsObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SimEventsObj_id(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -569,9 +1644,9 @@ func (ec *executionContext) _Sample_id(ctx context.Context, field graphql.Collec
 	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Sample_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_SimEventsObj_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Sample",
+		Object:     "SimEventsObj",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -582,8 +1657,8 @@ func (ec *executionContext) fieldContext_Sample_id(_ context.Context, field grap
 	return fc, nil
 }
 
-func (ec *executionContext) _Sample_title(ctx context.Context, field graphql.CollectedField, obj *Sample) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Sample_title(ctx, field)
+func (ec *executionContext) _SimEventsObj_name(ctx context.Context, field graphql.CollectedField, obj *SimEventsObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SimEventsObj_name(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -596,7 +1671,7 @@ func (ec *executionContext) _Sample_title(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Title, nil
+		return obj.Name, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -610,9 +1685,9 @@ func (ec *executionContext) _Sample_title(ctx context.Context, field graphql.Col
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Sample_title(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_SimEventsObj_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Sample",
+		Object:     "SimEventsObj",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -623,8 +1698,8 @@ func (ec *executionContext) fieldContext_Sample_title(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Sample_title_ar(ctx context.Context, field graphql.CollectedField, obj *Sample) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Sample_title_ar(ctx, field)
+func (ec *executionContext) _SimEventsObj_image(ctx context.Context, field graphql.CollectedField, obj *SimEventsObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SimEventsObj_image(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -637,7 +1712,7 @@ func (ec *executionContext) _Sample_title_ar(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TitleAr, nil
+		return obj.Image, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -651,9 +1726,269 @@ func (ec *executionContext) _Sample_title_ar(ctx context.Context, field graphql.
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Sample_title_ar(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_SimEventsObj_image(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Sample",
+		Object:     "SimEventsObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _SimEventsObj_location(ctx context.Context, field graphql.CollectedField, obj *SimEventsObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SimEventsObj_location(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Location, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*LocationObj)
+	fc.Result = res
+	return ec.marshalOLocationObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐLocationObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_SimEventsObj_location(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "SimEventsObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "city":
+				return ec.fieldContext_LocationObj_city(ctx, field)
+			case "Lat":
+				return ec.fieldContext_LocationObj_Lat(ctx, field)
+			case "Lng":
+				return ec.fieldContext_LocationObj_Lng(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type LocationObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _SimEventsObj_rating(ctx context.Context, field graphql.CollectedField, obj *SimEventsObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SimEventsObj_rating(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Rating, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	fc.Result = res
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_SimEventsObj_rating(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "SimEventsObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _SimEventsObj_date(ctx context.Context, field graphql.CollectedField, obj *SimEventsObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SimEventsObj_date(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Date, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*DateObj)
+	fc.Result = res
+	return ec.marshalODateObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDateObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_SimEventsObj_date(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "SimEventsObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "from":
+				return ec.fieldContext_DateObj_from(ctx, field)
+			case "to":
+				return ec.fieldContext_DateObj_to(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type DateObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TagObj_id(ctx context.Context, field graphql.CollectedField, obj *TagObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TagObj_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TagObj_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TagObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TagObj_name(ctx context.Context, field graphql.CollectedField, obj *TagObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TagObj_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TagObj_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TagObj",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TagObj_color(ctx context.Context, field graphql.CollectedField, obj *TagObj) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TagObj_color(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Color, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TagObj_color(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TagObj",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -2445,6 +3780,180 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** object.gotpl ****************************
 
+var dateObjImplementors = []string{"DateObj"}
+
+func (ec *executionContext) _DateObj(ctx context.Context, sel ast.SelectionSet, obj *DateObj) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, dateObjImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("DateObj")
+		case "from":
+			out.Values[i] = ec._DateObj_from(ctx, field, obj)
+		case "to":
+			out.Values[i] = ec._DateObj_to(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var detailsPageImplementors = []string{"DetailsPage"}
+
+func (ec *executionContext) _DetailsPage(ctx context.Context, sel ast.SelectionSet, obj *DetailsPage) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, detailsPageImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("DetailsPage")
+		case "id":
+			out.Values[i] = ec._DetailsPage_id(ctx, field, obj)
+		case "name":
+			out.Values[i] = ec._DetailsPage_name(ctx, field, obj)
+		case "image":
+			out.Values[i] = ec._DetailsPage_image(ctx, field, obj)
+		case "date":
+			out.Values[i] = ec._DetailsPage_date(ctx, field, obj)
+		case "time":
+			out.Values[i] = ec._DetailsPage_time(ctx, field, obj)
+		case "description":
+			out.Values[i] = ec._DetailsPage_description(ctx, field, obj)
+		case "location":
+			out.Values[i] = ec._DetailsPage_location(ctx, field, obj)
+		case "tags":
+			out.Values[i] = ec._DetailsPage_tags(ctx, field, obj)
+		case "features":
+			out.Values[i] = ec._DetailsPage_features(ctx, field, obj)
+		case "similarEvents":
+			out.Values[i] = ec._DetailsPage_similarEvents(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var featureObjImplementors = []string{"FeatureObj"}
+
+func (ec *executionContext) _FeatureObj(ctx context.Context, sel ast.SelectionSet, obj *FeatureObj) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, featureObjImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("FeatureObj")
+		case "id":
+			out.Values[i] = ec._FeatureObj_id(ctx, field, obj)
+		case "icon":
+			out.Values[i] = ec._FeatureObj_icon(ctx, field, obj)
+		case "name":
+			out.Values[i] = ec._FeatureObj_name(ctx, field, obj)
+		case "value":
+			out.Values[i] = ec._FeatureObj_value(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var locationObjImplementors = []string{"LocationObj"}
+
+func (ec *executionContext) _LocationObj(ctx context.Context, sel ast.SelectionSet, obj *LocationObj) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, locationObjImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("LocationObj")
+		case "city":
+			out.Values[i] = ec._LocationObj_city(ctx, field, obj)
+		case "Lat":
+			out.Values[i] = ec._LocationObj_Lat(ctx, field, obj)
+		case "Lng":
+			out.Values[i] = ec._LocationObj_Lng(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var queryImplementors = []string{"Query"}
 
 func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -2464,7 +3973,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "getSampleById":
+		case "getDetailsPageById":
 			field := field
 
 			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
@@ -2473,7 +3982,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_getSampleById(ctx, field)
+				res = ec._Query_getDetailsPageById(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -2486,7 +3995,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "getAllSamples":
+		case "getAllDetailsPage":
 			field := field
 
 			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
@@ -2495,7 +4004,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_getAllSamples(ctx, field)
+				res = ec._Query_getAllDetailsPage(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -2539,23 +4048,69 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	return out
 }
 
-var sampleImplementors = []string{"Sample"}
+var simEventsObjImplementors = []string{"SimEventsObj"}
 
-func (ec *executionContext) _Sample(ctx context.Context, sel ast.SelectionSet, obj *Sample) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, sampleImplementors)
+func (ec *executionContext) _SimEventsObj(ctx context.Context, sel ast.SelectionSet, obj *SimEventsObj) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, simEventsObjImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("Sample")
+			out.Values[i] = graphql.MarshalString("SimEventsObj")
 		case "id":
-			out.Values[i] = ec._Sample_id(ctx, field, obj)
-		case "title":
-			out.Values[i] = ec._Sample_title(ctx, field, obj)
-		case "title_ar":
-			out.Values[i] = ec._Sample_title_ar(ctx, field, obj)
+			out.Values[i] = ec._SimEventsObj_id(ctx, field, obj)
+		case "name":
+			out.Values[i] = ec._SimEventsObj_name(ctx, field, obj)
+		case "image":
+			out.Values[i] = ec._SimEventsObj_image(ctx, field, obj)
+		case "location":
+			out.Values[i] = ec._SimEventsObj_location(ctx, field, obj)
+		case "rating":
+			out.Values[i] = ec._SimEventsObj_rating(ctx, field, obj)
+		case "date":
+			out.Values[i] = ec._SimEventsObj_date(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var tagObjImplementors = []string{"TagObj"}
+
+func (ec *executionContext) _TagObj(ctx context.Context, sel ast.SelectionSet, obj *TagObj) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tagObjImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TagObj")
+		case "id":
+			out.Values[i] = ec._TagObj_id(ctx, field, obj)
+		case "name":
+			out.Values[i] = ec._TagObj_name(ctx, field, obj)
+		case "color":
+			out.Values[i] = ec._TagObj_color(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2920,26 +4475,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
-	res, err := graphql.UnmarshalInt(v)
-	return res, graphql.ErrorOnPath(ctx, err)
+func (ec *executionContext) marshalNDetailsPage2githubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDetailsPage(ctx context.Context, sel ast.SelectionSet, v DetailsPage) graphql.Marshaler {
+	return ec._DetailsPage(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
-	res := graphql.MarshalInt(v)
-	if res == graphql.Null {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-	}
-	return res
-}
-
-func (ec *executionContext) marshalNSample2githubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSample(ctx context.Context, sel ast.SelectionSet, v Sample) graphql.Marshaler {
-	return ec._Sample(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNSample2ᚕgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSampleᚄ(ctx context.Context, sel ast.SelectionSet, v []Sample) graphql.Marshaler {
+func (ec *executionContext) marshalNDetailsPage2ᚕgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDetailsPageᚄ(ctx context.Context, sel ast.SelectionSet, v []DetailsPage) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2963,7 +4503,7 @@ func (ec *executionContext) marshalNSample2ᚕgithubᚗcomᚋshawgichanᚋtouris
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNSample2githubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSample(ctx, sel, v[i])
+			ret[i] = ec.marshalNDetailsPage2githubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDetailsPage(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2983,14 +4523,29 @@ func (ec *executionContext) marshalNSample2ᚕgithubᚗcomᚋshawgichanᚋtouris
 	return ret
 }
 
-func (ec *executionContext) marshalNSample2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSample(ctx context.Context, sel ast.SelectionSet, v *Sample) graphql.Marshaler {
+func (ec *executionContext) marshalNDetailsPage2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDetailsPage(ctx context.Context, sel ast.SelectionSet, v *DetailsPage) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._Sample(ctx, sel, v)
+	return ec._DetailsPage(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
+	res, err := graphql.UnmarshalInt(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
@@ -3287,6 +4842,77 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
+func (ec *executionContext) marshalODateObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDateObj(ctx context.Context, sel ast.SelectionSet, v *DateObj) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._DateObj(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOFeatureObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐFeatureObj(ctx context.Context, sel ast.SelectionSet, v []*FeatureObj) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOFeatureObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐFeatureObj(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOFeatureObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐFeatureObj(ctx context.Context, sel ast.SelectionSet, v *FeatureObj) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._FeatureObj(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOFloat2ᚖfloat64(ctx context.Context, v interface{}) (*float64, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := graphql.UnmarshalFloatContext(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOFloat2ᚖfloat64(ctx context.Context, sel ast.SelectionSet, v *float64) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	res := graphql.MarshalFloatContext(*v)
+	return graphql.WrapContextMarshaler(ctx, res)
+}
+
 func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
 	if v == nil {
 		return nil, nil
@@ -3303,6 +4929,61 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 	return res
 }
 
+func (ec *executionContext) marshalOLocationObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐLocationObj(ctx context.Context, sel ast.SelectionSet, v *LocationObj) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._LocationObj(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOSimEventsObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx context.Context, sel ast.SelectionSet, v []*SimEventsObj) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOSimEventsObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOSimEventsObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx context.Context, sel ast.SelectionSet, v *SimEventsObj) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._SimEventsObj(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
 	if v == nil {
 		return nil, nil
@@ -3316,6 +4997,70 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 		return graphql.Null
 	}
 	res := graphql.MarshalString(*v)
+	return res
+}
+
+func (ec *executionContext) marshalOTagObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐTagObj(ctx context.Context, sel ast.SelectionSet, v []*TagObj) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOTagObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐTagObj(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOTagObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐTagObj(ctx context.Context, sel ast.SelectionSet, v *TagObj) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._TagObj(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOTime2ᚖtimeᚐTime(ctx context.Context, v interface{}) (*time.Time, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := graphql.UnmarshalTime(v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOTime2ᚖtimeᚐTime(ctx context.Context, sel ast.SelectionSet, v *time.Time) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	res := graphql.MarshalTime(*v)
 	return res
 }
 

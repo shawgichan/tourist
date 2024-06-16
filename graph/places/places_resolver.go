@@ -2,9 +2,9 @@ package places
 
 import "context"
 
-func (r *queryResolver) GetSampleByID(ctx context.Context, id int) (*Sample, error) {
+func (r *queryResolver) GetDetailsPageByID(ctx context.Context, id int) (*DetailsPage, error) {
 	return nil, nil
 }
-func (r *queryResolver) GetAllSamples(ctx context.Context) ([]Sample, error) {
-	return nil, nil
+func (r *queryResolver) GetAllDetailsPage(ctx context.Context) ([]DetailsPage, error) {
+	return []DetailsPage{}, nil
 }
