@@ -27,7 +27,7 @@ cd tourist
 The server will start running on `http://localhost:8080`.
 
 ## API Endpoints
-
+- ONLY TESTING
 ### Create a New Place
 
 ### Contributing
