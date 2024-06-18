@@ -1,0 +1,21 @@
+name: touristapp
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=tourist
+      - POSTGRES_DB=tourist_db
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_ADDRESS=postgresql://root:tourist@postgres:5432/tourist_db?sslmode=disable
+    depends_on:
+      - postgres
+    entrypoint: ["/app/wait-for.sh", "postgres:5432","--", "/app/start.sh"]
+    command: [ "/app/main" ]
+    
