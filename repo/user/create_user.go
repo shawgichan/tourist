@@ -7,8 +7,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/shawgichan/tourist/db/sqlc"
 	"github.com/shawgichan/tourist/repo/utils"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Server struct {
@@ -22,6 +24,7 @@ func NewPlaceServer(store db.Store) *Server {
 type registerUserRequest struct {
 	UserName string `form:"user_name" binding:"required"`
 	Email    string `form:"email" binding:"required"`
+	Password string `form:"password" binding:"required"`
 }
 
 func (server *Server) RegisterUser(ctx *gin.Context) {
@@ -52,6 +55,45 @@ func (server *Server) RegisterUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, "user created successfully")
+	profileArgs := db.CreateProfileParams{
+		FirstName:       "",
+		LastName:        "",
+		AddressesID:     0,
+		ProfileImageUrl: "",
+		PhoneNumber:     "",
+		CompanyNumber:   "",
+		WhatsappNumber:  "",
+		Gender:          0,
+		AllLanguagesID:  []int64{},
+		RefNo:           "",
+		CoverImageUrl:   pgtype.Text{},
+	}
+
+	profile, err := server.SQLStore.CreateProfile(ctx, profileArgs)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	encryptedPassword, _ := bcrypt.GenerateFromPassword([]byte(req.Password), 6)
+	password := string(encryptedPassword)
+
+	userArgs := db.CreateUserParams{
+		Email:          "",
+		Username:       "",
+		HashedPassword: pgtype.Text{String: password, Valid: true},
+		Status:         0,
+		RolesID:        pgtype.Int8{},
+		ProfilesID:     profile.ID,
+		UserTypesID:    0,
+	}
+
+	user, err := server.SQLStore.CreateUser(ctx, userArgs)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user)
 
 }

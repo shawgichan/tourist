@@ -11,6 +11,8 @@ import (
 type Querier interface {
 	CheckUsernameAndEmail(ctx context.Context, arg CheckUsernameAndEmailParams) (CheckUsernameAndEmailRow, error)
 	CreatePlace(ctx context.Context, arg CreatePlaceParams) (int64, error)
+	CreateProfile(ctx context.Context, arg CreateProfileParams) (Profile, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	GetPlace(ctx context.Context, id int64) (Place, error)
 	GetPlaces(ctx context.Context) ([]Place, error)
 }

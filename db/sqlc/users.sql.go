@@ -37,3 +37,119 @@ func (q *Queries) CheckUsernameAndEmail(ctx context.Context, arg CheckUsernameAn
 	err := row.Scan(&i.ID, &i.EmailPresent, &i.UsernamePresent)
 	return i, err
 }
+
+const createProfile = `-- name: CreateProfile :one
+INSERT INTO profiles (
+  first_name,
+  last_name,
+  addresses_id,
+  profile_image_url,
+  phone_number,
+  company_number,
+  whatsapp_number,
+  gender,
+  all_languages_id,
+  ref_no,
+  cover_image_url
+) VALUES (
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+) RETURNING id, first_name, last_name, addresses_id, profile_image_url, phone_number, company_number, whatsapp_number, gender, all_languages_id, created_at, updated_at, ref_no, cover_image_url
+`
+
+type CreateProfileParams struct {
+	FirstName       string      `json:"first_name"`
+	LastName        string      `json:"last_name"`
+	AddressesID     int64       `json:"addresses_id"`
+	ProfileImageUrl string      `json:"profile_image_url"`
+	PhoneNumber     string      `json:"phone_number"`
+	CompanyNumber   string      `json:"company_number"`
+	WhatsappNumber  string      `json:"whatsapp_number"`
+	Gender          int64       `json:"gender"`
+	AllLanguagesID  []int64     `json:"all_languages_id"`
+	RefNo           string      `json:"ref_no"`
+	CoverImageUrl   pgtype.Text `json:"cover_image_url"`
+}
+
+func (q *Queries) CreateProfile(ctx context.Context, arg CreateProfileParams) (Profile, error) {
+	row := q.db.QueryRow(ctx, createProfile,
+		arg.FirstName,
+		arg.LastName,
+		arg.AddressesID,
+		arg.ProfileImageUrl,
+		arg.PhoneNumber,
+		arg.CompanyNumber,
+		arg.WhatsappNumber,
+		arg.Gender,
+		arg.AllLanguagesID,
+		arg.RefNo,
+		arg.CoverImageUrl,
+	)
+	var i Profile
+	err := row.Scan(
+		&i.ID,
+		&i.FirstName,
+		&i.LastName,
+		&i.AddressesID,
+		&i.ProfileImageUrl,
+		&i.PhoneNumber,
+		&i.CompanyNumber,
+		&i.WhatsappNumber,
+		&i.Gender,
+		&i.AllLanguagesID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.RefNo,
+		&i.CoverImageUrl,
+	)
+	return i, err
+}
+
+const createUser = `-- name: CreateUser :one
+INSERT INTO users (
+  email,
+  username,
+  hashed_password,
+  status,
+  roles_id,
+  profiles_id,
+  user_types_id
+) VALUES (
+  $1, $2, $3, $4, $5, $6, $7
+) RETURNING id, email, username, hashed_password, status, roles_id, profiles_id, user_types_id, created_at, updated_at
+`
+
+type CreateUserParams struct {
+	Email          string      `json:"email"`
+	Username       string      `json:"username"`
+	HashedPassword pgtype.Text `json:"hashed_password"`
+	Status         int64       `json:"status"`
+	RolesID        pgtype.Int8 `json:"roles_id"`
+	ProfilesID     int64       `json:"profiles_id"`
+	UserTypesID    int64       `json:"user_types_id"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+	row := q.db.QueryRow(ctx, createUser,
+		arg.Email,
+		arg.Username,
+		arg.HashedPassword,
+		arg.Status,
+		arg.RolesID,
+		arg.ProfilesID,
+		arg.UserTypesID,
+	)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Username,
+		&i.HashedPassword,
+		&i.Status,
+		&i.RolesID,
+		&i.ProfilesID,
+		&i.UserTypesID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
