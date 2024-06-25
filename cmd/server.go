@@ -27,6 +27,7 @@ func NewServer(store db.Store, pool *pgxpool.Pool) (*Server, error) {
 
 	RouteServer := NewRouteServer(store, router, pool)
 	RouteServer.ApiRoutes()
+	RouteServer.UserRoutes()
 	graph := graph_server.NewGraphServer(server.Store, server.StoreWithPool, server.Router, server.Pool)
 	graph.GraphServer()
 	log.Println("testing total routes", len(server.Router.Routes()))

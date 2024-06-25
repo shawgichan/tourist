@@ -11,6 +11,7 @@ require (
 	github.com/jackc/pgx/v5 v5.6.0
 	github.com/lib/pq v1.10.9
 	github.com/mattes/migrate v3.0.1+incompatible
+	github.com/mrz1836/go-sanitize v1.3.2
 	github.com/o1egl/paseto v1.0.0
 	github.com/subosito/gotenv v1.6.0
 	github.com/vektah/gqlparser/v2 v2.5.16
@@ -54,6 +55,7 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/mock v0.4.0 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.24.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
