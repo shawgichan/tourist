@@ -2,9 +2,9 @@ CREATE TABLE "users" (
   "id" BIGSERIAL PRIMARY KEY,
   "email" varchar(255) NOT NULL,
   "username" varchar(255) NOT NULL,
-  "hashed_password" varchar(255),
+  "hashed_password" varchar(255) NOT NULL,
   "status" bigint NOT NULL,
-  "roles_id" bigint,
+  "roles_id" bigint NOT NULL,
   "profiles_id" bigint NOT NULL,
   "user_types_id" bigint NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
@@ -38,39 +38,39 @@ CREATE TABLE "locations" (
 
 CREATE TABLE "user_preferences" (
   "id" BIGSERIAL PRIMARY KEY,
-  "users_id" bigint,
-  "travel_companion_id" smallint,
-  "place_category_preference" varchar,
-  "price_range" varchar,
-  "event_type_preference" varchar,
-  "interests" text,
-  "budget" varchar,
+  "users_id" bigint NOT NULL,
+  "travel_companion_id" smallint NOT NULL,
+  "place_category_preference" varchar NOT NULL,
+  "price_range" varchar NOT NULL,
+  "event_type_preference" varchar NOT NULL,
+  "interests" text NOT NULL,
+  "budget" varchar NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "places" (
   "id" BIGSERIAL PRIMARY KEY,
   "name" varchar(255) NOT NULL,
-  "description" text,
-  "opening_hours" time,
-  "closing_hours" time,
-  "rating" decimal(2,1),
-  "ticket_category" smallint,
-  "ticket_price" varchar,
-  "location_id" bigint,
-  "place_type_id" bigint,
+  "description" text NOT NULL,
+  "opening_hours" timestamptz NOT NULL,
+  "closing_hours" timestamptz NOT NULL,
+  "rating" decimal(2,1) NOT NULL,
+  "ticket_category" smallint NOT NULL,
+  "ticket_price" varchar NOT NULL,
+  "location_id" bigint NOT NULL,
+  "place_type_id" bigint NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now()),
   "cover_image_url" varchar(255),
   "profile_image_url" varchar(255),
-  "resturant_branch_id" bigint,
-  "preference_match" bigint[]
+  "resturant_branch_id" bigint NOT NULL,
+  "preference_match" bigint[] NOT NULL
 );
 
 CREATE TABLE "restaurant_branches" (
   "id" BIGSERIAL PRIMARY KEY,
   "name" varchar NOT NULL,
-  "resturant_id" bigint
+  "resturant_id" bigint NOT NULL
 );
 
 CREATE TABLE "restaurants" (
@@ -80,21 +80,21 @@ CREATE TABLE "restaurants" (
 
 CREATE TABLE "stop_off_points" (
   "id" BIGSERIAL PRIMARY KEY,
-  "trip_id" bigint,
-  "places_id" bigint,
-  "sequence_number" smallint,
+  "trip_id" bigint NOT NULL,
+  "places_id" bigint NOT NULL,
+  "sequence_number" smallint NOT NULL,
   "arrival_time" timestamptz,
   "departure_time" timestamptz,
-  "notes" text,
+  "notes" text NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "trips" (
   "id" BIGSERIAL PRIMARY KEY,
-  "user_id" bigint,
+  "user_id" bigint NOT NULL,
   "name" varchar(255) NOT NULL,
-  "description" text,
+  "description" text NOT NULL,
   "origin_location_id" bigint,
   "destination_location_id" bigint,
   "primary_place_id" bigint,
