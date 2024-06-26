@@ -29,17 +29,17 @@ func NewPastoMaker(SymmetricKey string) (Maker, error) {
 	return maker, nil
 }
 
-func (maker *PasetoMaker) CreateToken(username string, duration time.Duration) (string, error) {
+func (maker *PasetoMaker) CreateToken(username string, duration time.Duration) (string, *Payload, error) {
 	payload, err := NewPayload(username, duration)
 	if err != nil {
 		log.Println("tesitng errr")
-		return "", err
+		return "", payload, err
 	}
 	token, err := maker.Paseto.Encrypt(maker.SymmetricKey, payload, nil)
 	if err != nil {
-		return "", err
+		return "", payload, err
 	}
-	return token, nil
+	return token, payload, nil
 }
 
 func (maker *PasetoMaker) VerifyToken(token string) (*Payload, error) {

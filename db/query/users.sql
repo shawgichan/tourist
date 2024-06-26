@@ -6,6 +6,8 @@ SELECT
 FROM
   users WHERE username = $1 or email = $2;
 
+-- name: GetUserByName :one
+SELECT * FROM users WHERE username = $1;
 
 -- name: CreateProfile :one
 INSERT INTO profiles (

@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/github"
 	_ "github.com/lib/pq"
 	api "github.com/shawgichan/tourist/cmd"
 	connect "github.com/shawgichan/tourist/db"

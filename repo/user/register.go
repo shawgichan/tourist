@@ -8,16 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgxpool"
 	db "github.com/shawgichan/tourist/db/sqlc"
-	"github.com/shawgichan/tourist/repo/utils"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/shawgichan/tourist/token"
+	"github.com/shawgichan/tourist/utils"
 )
 
 type Server struct {
-	SQLStore db.Store
+	SQLStore   db.Store
+	Pool       *pgxpool.Pool
+	TokenMaker token.Maker
 }
 
-func NewPlaceServer(store db.Store) *Server {
+func NewUserServer(store db.Store) *Server {
 	return &Server{SQLStore: store}
 }
 
@@ -25,6 +28,14 @@ type registerUserRequest struct {
 	UserName string `form:"user_name" binding:"required"`
 	Email    string `form:"email" binding:"required"`
 	Password string `form:"password" binding:"required"`
+}
+type registerResponse struct {
+	Email       string      `json:"email"`
+	Username    string      `json:"username"`
+	Status      int64       `json:"status"`
+	RolesID     pgtype.Int8 `json:"roles_id"`
+	ProfilesID  int64       `json:"profiles_id"`
+	UserTypesID int64       `json:"user_types_id"`
 }
 
 func (server *Server) RegisterUser(ctx *gin.Context) {
@@ -47,11 +58,11 @@ func (server *Server) RegisterUser(ctx *gin.Context) {
 		return
 	}
 	if userCheck.EmailPresent.Bool {
-		ctx.JSON(http.StatusBadRequest, errors.New("email already existing"))
+		ctx.JSON(http.StatusBadRequest, utils.ErrorResponse(errors.New("email already existing")))
 		return
 	}
 	if userCheck.UsernamePresent.Bool {
-		ctx.JSON(http.StatusBadRequest, errors.New("username already existing"))
+		ctx.JSON(http.StatusBadRequest, utils.ErrorResponse(errors.New("username already existing")))
 		return
 	}
 
@@ -65,7 +76,7 @@ func (server *Server) RegisterUser(ctx *gin.Context) {
 		WhatsappNumber:  "",
 		Gender:          0,
 		AllLanguagesID:  []int64{},
-		RefNo:           "",
+		RefNo:           utils.GenerateReferenceNumber("PROF_"),
 		CoverImageUrl:   pgtype.Text{},
 	}
 
@@ -75,12 +86,16 @@ func (server *Server) RegisterUser(ctx *gin.Context) {
 		return
 	}
 
-	encryptedPassword, _ := bcrypt.GenerateFromPassword([]byte(req.Password), 6)
+	encryptedPassword, err := utils.HashPassword(req.Password)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.ErrorResponse(err))
+		return
+	}
 	password := string(encryptedPassword)
 
 	userArgs := db.CreateUserParams{
-		Email:          "",
-		Username:       "",
+		Email:          req.Email,
+		Username:       req.UserName,
 		HashedPassword: pgtype.Text{String: password, Valid: true},
 		Status:         0,
 		RolesID:        pgtype.Int8{},
@@ -93,7 +108,15 @@ func (server *Server) RegisterUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
 	}
+	resp := registerResponse{
+		Email:       user.Email,
+		Username:    user.Username,
+		Status:      user.Status,
+		RolesID:     pgtype.Int8{},
+		ProfilesID:  user.ProfilesID,
+		UserTypesID: user.UserTypesID,
+	}
 
-	ctx.JSON(http.StatusOK, user)
+	ctx.JSON(http.StatusOK, resp)
 
 }

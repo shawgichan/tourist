@@ -15,6 +15,7 @@ type Querier interface {
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	GetPlace(ctx context.Context, id int64) (Place, error)
 	GetPlaces(ctx context.Context) ([]Place, error)
+	GetUserByName(ctx context.Context, username string) (User, error)
 }
 
 var _ Querier = (*Queries)(nil)
