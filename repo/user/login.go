@@ -40,7 +40,7 @@ func (server *Server) LoginUser(ctx *gin.Context) {
 	user, err := server.SQLStore.GetUserByName(ctx, req.UserName)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			ctx.JSON(http.StatusNotFound, errors.New("not found"))
+			ctx.JSON(http.StatusNotFound, utils.ErrorResponse(err))
 			return
 		} else {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error:": err})
@@ -52,7 +52,7 @@ func (server *Server) LoginUser(ctx *gin.Context) {
 	// 	ctx.JSON(http.StatusBadRequest, utils.ErrorResponse(err))
 	// 	return
 	// }
-	passwordError := utils.CheckPassword(req.Password, user.HashedPassword.String)
+	passwordError := utils.CheckPassword(req.Password, user.HashedPassword)
 	if passwordError != nil {
 		ctx.JSON(http.StatusBadRequest, utils.ErrorResponse(passwordError))
 		return

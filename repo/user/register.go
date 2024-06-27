@@ -25,9 +25,11 @@ func NewUserServer(store db.Store) *Server {
 }
 
 type registerUserRequest struct {
-	UserName string `form:"user_name" binding:"required"`
-	Email    string `form:"email" binding:"required"`
-	Password string `form:"password" binding:"required"`
+	UserName    string `form:"username" binding:"required"`
+	Email       string `form:"email"`
+	Password    string `form:"password" binding:"required"`
+	Name        string `form:"name"`
+	PhoneNumber string `form:"phone_number"`
 }
 type registerResponse struct {
 	Email       string      `json:"email"`
@@ -96,9 +98,9 @@ func (server *Server) RegisterUser(ctx *gin.Context) {
 	userArgs := db.CreateUserParams{
 		Email:          req.Email,
 		Username:       req.UserName,
-		HashedPassword: pgtype.Text{String: password, Valid: true},
+		HashedPassword: password,
 		Status:         0,
-		RolesID:        pgtype.Int8{},
+		RolesID:        1,
 		ProfilesID:     profile.ID,
 		UserTypesID:    0,
 	}

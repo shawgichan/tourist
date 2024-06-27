@@ -119,13 +119,13 @@ INSERT INTO users (
 `
 
 type CreateUserParams struct {
-	Email          string      `json:"email"`
-	Username       string      `json:"username"`
-	HashedPassword pgtype.Text `json:"hashed_password"`
-	Status         int64       `json:"status"`
-	RolesID        pgtype.Int8 `json:"roles_id"`
-	ProfilesID     int64       `json:"profiles_id"`
-	UserTypesID    int64       `json:"user_types_id"`
+	Email          string `json:"email"`
+	Username       string `json:"username"`
+	HashedPassword string `json:"hashed_password"`
+	Status         int64  `json:"status"`
+	RolesID        int64  `json:"roles_id"`
+	ProfilesID     int64  `json:"profiles_id"`
+	UserTypesID    int64  `json:"user_types_id"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {

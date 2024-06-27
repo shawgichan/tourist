@@ -21,7 +21,7 @@ type Server struct {
 
 func NewServer(store db.Store, pool *pgxpool.Pool) (*Server, error) {
 
-	tokenMaker, err := token.NewPastoMaker("11122233344455566677788899900012")
+	tokenMaker, err := token.NewPastoMaker("12345678901234567890123456789012")
 	if err != nil {
 		return nil, fmt.Errorf("cannot create token %w", err)
 	}
