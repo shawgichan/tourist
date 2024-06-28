@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
@@ -47,26 +48,21 @@ func (server *Server) LoginUser(ctx *gin.Context) {
 		}
 	}
 
-	// passwordError := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword.String), []byte(req.Password))
-	// if passwordError != nil {
-	// 	ctx.JSON(http.StatusBadRequest, utils.ErrorResponse(err))
-	// 	return
-	// }
 	passwordError := utils.CheckPassword(req.Password, user.HashedPassword)
 	if passwordError != nil {
 		ctx.JSON(http.StatusBadRequest, utils.ErrorResponse(passwordError))
 		return
 	}
 
-	// accessToken, _, err2 := server.TokenMaker.CreateToken(user.Username, 2*time.Hour)
-	// if err2 != nil {
-	// 	ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-	// 	return
-	// }
+	accessToken, err2 := server.TokenMaker.CreateToken(user.Username, 2*time.Hour)
+	if err2 != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.ErrorResponse(err2))
+		return
+	}
 
 	rsp = loginResponse{
-		UserID: user.ID,
-		//Token:     accessToken,
+		UserID:    user.ID,
+		Token:     accessToken,
 		Email:     user.Email,
 		UserName:  user.Username,
 		FirstName: "",

@@ -24,7 +24,7 @@ func NewUserServer(store db.Store, token token.Maker, router *gin.Engine, pool *
 	}
 }
 func (server *UserServer) UserRoutes() {
-	users := user.NewUserServer(server.Store)
+	users := user.NewUserServer(server.Store, server.TokenMaker)
 
 	//auth := middleware.AuthMiddleware(server.TokenMaker)
 	d := server.Router.Group("api/auth")

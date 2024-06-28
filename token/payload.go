@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/gofrs/uuid"
+	"github.com/google/uuid"
 )
 
 type Payload struct {
@@ -16,7 +16,7 @@ type Payload struct {
 
 func NewPayload(username string, duration time.Duration) (*Payload, error) {
 
-	tokenID, err := uuid.NewV7()
+	tokenID, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err
 	}

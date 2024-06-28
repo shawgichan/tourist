@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
-	"github.com/jackc/pgx/v5/pgxpool"
 	db "github.com/shawgichan/tourist/db/sqlc"
 	"github.com/shawgichan/tourist/token"
 	"github.com/shawgichan/tourist/utils"
@@ -16,12 +15,11 @@ import (
 
 type Server struct {
 	SQLStore   db.Store
-	Pool       *pgxpool.Pool
 	TokenMaker token.Maker
 }
 
-func NewUserServer(store db.Store) *Server {
-	return &Server{SQLStore: store}
+func NewUserServer(store db.Store, tokenMaker token.Maker) *Server {
+	return &Server{SQLStore: store, TokenMaker: tokenMaker}
 }
 
 type registerUserRequest struct {
@@ -69,11 +67,11 @@ func (server *Server) RegisterUser(ctx *gin.Context) {
 	}
 
 	profileArgs := db.CreateProfileParams{
-		FirstName:       "",
+		FirstName:       req.Name,
 		LastName:        "",
 		AddressesID:     0,
 		ProfileImageUrl: "",
-		PhoneNumber:     "",
+		PhoneNumber:     req.PhoneNumber,
 		CompanyNumber:   "",
 		WhatsappNumber:  "",
 		Gender:          0,
