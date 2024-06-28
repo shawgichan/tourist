@@ -34,6 +34,28 @@ func BindingFormError(err error, model any) string {
 	return "Invalid input"
 }
 
+func CustomBindingJsonError(err error, model any) string {
+	errMessage := err.Error()
+	if parts := strings.Split(errMessage, " "); len(parts) >= 2 {
+		field := parts[1]
+		splittedField := strings.Split(field, ".")
+		if len(splittedField) > 1 {
+			fieldName := sanitize.Alpha(splittedField[1], true)
+			ref, found := reflect.TypeOf(model).FieldByName(fieldName)
+			if !found {
+				return "Invalid input"
+			}
+
+			tagValue := ref.Tag.Get("json")
+			return fmt.Sprintf("Field '" + tagValue + "' is required")
+		} else {
+			return errMessage
+		}
+	}
+
+	return "Invalid input"
+}
+
 func GenerateReferenceNumber(prefex string) string {
 	timestamp := time.Now().UTC().Format("20060102150405")
 	uniqueID := fmt.Sprintf("%s%04d", timestamp, time.Now().Nanosecond())

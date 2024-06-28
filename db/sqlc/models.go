@@ -57,18 +57,18 @@ type Place struct {
 	ID                int64          `json:"id"`
 	Name              string         `json:"name"`
 	Description       pgtype.Text    `json:"description"`
-	OpeningHours      pgtype.Time    `json:"opening_hours"`
-	ClosingHours      pgtype.Time    `json:"closing_hours"`
+	OpeningHours      time.Time      `json:"opening_hours"`
+	ClosingHours      time.Time      `json:"closing_hours"`
 	Rating            pgtype.Numeric `json:"rating"`
-	TicketCategory    pgtype.Int2    `json:"ticket_category"`
-	TicketPrice       pgtype.Text    `json:"ticket_price"`
-	LocationID        pgtype.Int8    `json:"location_id"`
-	PlaceTypeID       pgtype.Int8    `json:"place_type_id"`
+	TicketCategory    int16          `json:"ticket_category"`
+	TicketPrice       string         `json:"ticket_price"`
+	LocationID        int64          `json:"location_id"`
+	PlaceTypeID       int64          `json:"place_type_id"`
 	CreatedAt         time.Time      `json:"created_at"`
 	UpdatedAt         time.Time      `json:"updated_at"`
-	CoverImageUrl     pgtype.Text    `json:"cover_image_url"`
-	ProfileImageUrl   pgtype.Text    `json:"profile_image_url"`
-	ResturantBranchID pgtype.Int8    `json:"resturant_branch_id"`
+	CoverImageUrl     string         `json:"cover_image_url"`
+	ProfileImageUrl   string         `json:"profile_image_url"`
+	ResturantBranchID int64          `json:"resturant_branch_id"`
 	PreferenceMatch   []int64        `json:"preference_match"`
 }
 

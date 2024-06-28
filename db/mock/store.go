@@ -55,6 +55,21 @@ func (mr *MockStoreMockRecorder) CheckUsernameAndEmail(arg0, arg1 any) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUsernameAndEmail", reflect.TypeOf((*MockStore)(nil).CheckUsernameAndEmail), arg0, arg1)
 }
 
+// CreateLocation mocks base method.
+func (m *MockStore) CreateLocation(arg0 context.Context, arg1 db.CreateLocationParams) (db.Location, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateLocation", arg0, arg1)
+	ret0, _ := ret[0].(db.Location)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateLocation indicates an expected call of CreateLocation.
+func (mr *MockStoreMockRecorder) CreateLocation(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateLocation", reflect.TypeOf((*MockStore)(nil).CreateLocation), arg0, arg1)
+}
+
 // CreatePlace mocks base method.
 func (m *MockStore) CreatePlace(arg0 context.Context, arg1 db.CreatePlaceParams) (int64, error) {
 	m.ctrl.T.Helper()
