@@ -1,10 +1,12 @@
 # Tourist
 
-Tourist is a Go application that provides an API for managing places (e.g., tourist attractions, restaurants, hotels, etc.). It uses the Gin web framework and PostgreSQL database.
+Tourist is a Go application that provides an API for managing places (e.g., tourist attractions, restaurants, hotels, etc.). It uses the Gin web framework, gRPC and PostgreSQL database.
 
 ## Features
 
 - Create new places
+- Register User
+- Login User
 
 ## Getting Started
 
@@ -36,8 +38,6 @@ Contributions are welcome! Please open an issue or submit a pull request.
 ### License
 This project is licensed under the MIT License.
 
-
-This README provides an overview of the `tourist` application, including its features, prerequisites, installation instructions, API endpoints, and contribution guidelines. Feel free to modify it according to your specific requirements.
 
 
 
