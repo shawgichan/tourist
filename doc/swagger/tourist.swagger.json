@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Tourist API",
-    "version": "1.0",
+    "version": "1.1",
     "contact": {
       "name": "tourist",
       "url": "https://github.com/shawgichan/tourist",
@@ -23,6 +23,8 @@
   "paths": {
     "/v1/create_user": {
       "post": {
+        "summary": "Create new user",
+        "description": "Use this API to create a new user",
         "operationId": "Tourist_CreateUser",
         "responses": {
           "200": {
@@ -55,6 +57,8 @@
     },
     "/v1/login_user": {
       "post": {
+        "summary": "Login user",
+        "description": "Use this API to login user",
         "operationId": "Tourist_LoginUser",
         "responses": {
           "200": {
