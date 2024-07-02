@@ -33,8 +33,9 @@ func main() {
 
 	pool := connect.ConnectToDb()
 	store := db.NewStore(pool)
-	go runGatewayServer(store)
-	runGrpcServer(store)
+	//go runGatewayServer(store)
+	runGinServer(store, pool)
+	//runGrpcServer(store)
 
 }
 
