@@ -23,6 +23,11 @@ type FeatureObj {
     name: String,
     value: String,
 }
+type Category {
+    id: Int,
+    name: String,
+    icon: String,
+}
 
 type SimEventsObj {
     id: Int,
@@ -45,10 +50,18 @@ type DetailsPage {
     features: [FeatureObj],
     similarEvents: [SimEventsObj],
 }
+type HomePage {
+    cateogries: [Category],
+    featuredEvents: [SimEventsObj],
+    nearBy: [SimEventsObj],
+    comingSoon: [SimEventsObj],
+    trendingEvents: [SimEventsObj],
+}
 # Queries
 type Query {
     getDetailsPageById(id: Int!): DetailsPage!
     getAllDetailsPage: [DetailsPage!]!
+    getHomePage: HomePage
 }
 
 

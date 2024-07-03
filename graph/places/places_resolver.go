@@ -7,6 +7,32 @@ import (
 	"github.com/shawgichan/tourist/graph"
 )
 
+func (r *queryResolver) GetHomePage(ctx context.Context) (*HomePage, error) {
+	//query := graphql.GetOperationContext(ctx).RawQuery
+	//place, err := r.Store.GetPlace(ctx, int64(id))
+	//if err != nil {
+	//	return nil, err
+	//}
+	//data, errData := r.QueryCheckerForPlaces(ctx, query)
+	homePage, err := mapHomePage(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+	return &homePage, nil
+}
+
+func mapHomePage(ctx context.Context, r *queryResolver) (HomePage, error) {
+	var outputs HomePage
+	_, err := r.Store.GetPlaces(ctx)
+	if err != nil {
+		return HomePage{}, err
+	}
+	// for _, v := range output {
+
+	// }
+	return outputs, nil
+}
+
 func (r *queryResolver) GetDetailsPageByID(ctx context.Context, id int) (*DetailsPage, error) {
 	//query := graphql.GetOperationContext(ctx).RawQuery
 	// place, err := r.Store.GetPlace(ctx, int64(id))

@@ -46,6 +46,12 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Category struct {
+		ID   func(childComplexity int) int
+		Icon func(childComplexity int) int
+		Name func(childComplexity int) int
+	}
+
 	DateObj struct {
 		From func(childComplexity int) int
 		To   func(childComplexity int) int
@@ -71,6 +77,14 @@ type ComplexityRoot struct {
 		Value func(childComplexity int) int
 	}
 
+	HomePage struct {
+		Cateogries     func(childComplexity int) int
+		ComingSoon     func(childComplexity int) int
+		FeaturedEvents func(childComplexity int) int
+		NearBy         func(childComplexity int) int
+		TrendingEvents func(childComplexity int) int
+	}
+
 	LocationObj struct {
 		City func(childComplexity int) int
 		Lat  func(childComplexity int) int
@@ -80,6 +94,7 @@ type ComplexityRoot struct {
 	Query struct {
 		GetAllDetailsPage  func(childComplexity int) int
 		GetDetailsPageByID func(childComplexity int, id int) int
+		GetHomePage        func(childComplexity int) int
 	}
 
 	SimEventsObj struct {
@@ -101,6 +116,7 @@ type ComplexityRoot struct {
 type QueryResolver interface {
 	GetDetailsPageByID(ctx context.Context, id int) (*DetailsPage, error)
 	GetAllDetailsPage(ctx context.Context) ([]DetailsPage, error)
+	GetHomePage(ctx context.Context) (*HomePage, error)
 }
 
 type executableSchema struct {
@@ -121,6 +137,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e, 0, 0, nil}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "Category.id":
+		if e.complexity.Category.ID == nil {
+			break
+		}
+
+		return e.complexity.Category.ID(childComplexity), true
+
+	case "Category.icon":
+		if e.complexity.Category.Icon == nil {
+			break
+		}
+
+		return e.complexity.Category.Icon(childComplexity), true
+
+	case "Category.name":
+		if e.complexity.Category.Name == nil {
+			break
+		}
+
+		return e.complexity.Category.Name(childComplexity), true
 
 	case "DateObj.from":
 		if e.complexity.DateObj.From == nil {
@@ -234,6 +271,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FeatureObj.Value(childComplexity), true
 
+	case "HomePage.cateogries":
+		if e.complexity.HomePage.Cateogries == nil {
+			break
+		}
+
+		return e.complexity.HomePage.Cateogries(childComplexity), true
+
+	case "HomePage.comingSoon":
+		if e.complexity.HomePage.ComingSoon == nil {
+			break
+		}
+
+		return e.complexity.HomePage.ComingSoon(childComplexity), true
+
+	case "HomePage.featuredEvents":
+		if e.complexity.HomePage.FeaturedEvents == nil {
+			break
+		}
+
+		return e.complexity.HomePage.FeaturedEvents(childComplexity), true
+
+	case "HomePage.nearBy":
+		if e.complexity.HomePage.NearBy == nil {
+			break
+		}
+
+		return e.complexity.HomePage.NearBy(childComplexity), true
+
+	case "HomePage.trendingEvents":
+		if e.complexity.HomePage.TrendingEvents == nil {
+			break
+		}
+
+		return e.complexity.HomePage.TrendingEvents(childComplexity), true
+
 	case "LocationObj.city":
 		if e.complexity.LocationObj.City == nil {
 			break
@@ -273,6 +345,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.GetDetailsPageByID(childComplexity, args["id"].(int)), true
+
+	case "Query.getHomePage":
+		if e.complexity.Query.GetHomePage == nil {
+			break
+		}
+
+		return e.complexity.Query.GetHomePage(childComplexity), true
 
 	case "SimEventsObj.date":
 		if e.complexity.SimEventsObj.Date == nil {
@@ -512,6 +591,129 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 // endregion ************************** directives.gotpl **************************
 
 // region    **************************** field.gotpl *****************************
+
+func (ec *executionContext) _Category_id(ctx context.Context, field graphql.CollectedField, obj *Category) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Category_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Category_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Category",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Category_name(ctx context.Context, field graphql.CollectedField, obj *Category) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Category_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Category_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Category",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Category_icon(ctx context.Context, field graphql.CollectedField, obj *Category) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Category_icon(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Icon, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Category_icon(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Category",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
 
 func (ec *executionContext) _DateObj_from(ctx context.Context, field graphql.CollectedField, obj *DateObj) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_DateObj_from(ctx, field)
@@ -1221,6 +1423,275 @@ func (ec *executionContext) fieldContext_FeatureObj_value(_ context.Context, fie
 	return fc, nil
 }
 
+func (ec *executionContext) _HomePage_cateogries(ctx context.Context, field graphql.CollectedField, obj *HomePage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_HomePage_cateogries(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cateogries, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*Category)
+	fc.Result = res
+	return ec.marshalOCategory2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategory(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_HomePage_cateogries(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "HomePage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Category_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Category_name(ctx, field)
+			case "icon":
+				return ec.fieldContext_Category_icon(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Category", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _HomePage_featuredEvents(ctx context.Context, field graphql.CollectedField, obj *HomePage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_HomePage_featuredEvents(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FeaturedEvents, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*SimEventsObj)
+	fc.Result = res
+	return ec.marshalOSimEventsObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_HomePage_featuredEvents(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "HomePage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_SimEventsObj_id(ctx, field)
+			case "name":
+				return ec.fieldContext_SimEventsObj_name(ctx, field)
+			case "image":
+				return ec.fieldContext_SimEventsObj_image(ctx, field)
+			case "location":
+				return ec.fieldContext_SimEventsObj_location(ctx, field)
+			case "rating":
+				return ec.fieldContext_SimEventsObj_rating(ctx, field)
+			case "date":
+				return ec.fieldContext_SimEventsObj_date(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type SimEventsObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _HomePage_nearBy(ctx context.Context, field graphql.CollectedField, obj *HomePage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_HomePage_nearBy(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NearBy, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*SimEventsObj)
+	fc.Result = res
+	return ec.marshalOSimEventsObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_HomePage_nearBy(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "HomePage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_SimEventsObj_id(ctx, field)
+			case "name":
+				return ec.fieldContext_SimEventsObj_name(ctx, field)
+			case "image":
+				return ec.fieldContext_SimEventsObj_image(ctx, field)
+			case "location":
+				return ec.fieldContext_SimEventsObj_location(ctx, field)
+			case "rating":
+				return ec.fieldContext_SimEventsObj_rating(ctx, field)
+			case "date":
+				return ec.fieldContext_SimEventsObj_date(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type SimEventsObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _HomePage_comingSoon(ctx context.Context, field graphql.CollectedField, obj *HomePage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_HomePage_comingSoon(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ComingSoon, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*SimEventsObj)
+	fc.Result = res
+	return ec.marshalOSimEventsObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_HomePage_comingSoon(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "HomePage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_SimEventsObj_id(ctx, field)
+			case "name":
+				return ec.fieldContext_SimEventsObj_name(ctx, field)
+			case "image":
+				return ec.fieldContext_SimEventsObj_image(ctx, field)
+			case "location":
+				return ec.fieldContext_SimEventsObj_location(ctx, field)
+			case "rating":
+				return ec.fieldContext_SimEventsObj_rating(ctx, field)
+			case "date":
+				return ec.fieldContext_SimEventsObj_date(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type SimEventsObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _HomePage_trendingEvents(ctx context.Context, field graphql.CollectedField, obj *HomePage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_HomePage_trendingEvents(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TrendingEvents, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*SimEventsObj)
+	fc.Result = res
+	return ec.marshalOSimEventsObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_HomePage_trendingEvents(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "HomePage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_SimEventsObj_id(ctx, field)
+			case "name":
+				return ec.fieldContext_SimEventsObj_name(ctx, field)
+			case "image":
+				return ec.fieldContext_SimEventsObj_image(ctx, field)
+			case "location":
+				return ec.fieldContext_SimEventsObj_location(ctx, field)
+			case "rating":
+				return ec.fieldContext_SimEventsObj_rating(ctx, field)
+			case "date":
+				return ec.fieldContext_SimEventsObj_date(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type SimEventsObj", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _LocationObj_city(ctx context.Context, field graphql.CollectedField, obj *LocationObj) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_LocationObj_city(ctx, field)
 	if err != nil {
@@ -1482,6 +1953,59 @@ func (ec *executionContext) fieldContext_Query_getAllDetailsPage(_ context.Conte
 				return ec.fieldContext_DetailsPage_similarEvents(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type DetailsPage", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_getHomePage(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_getHomePage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetHomePage(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*HomePage)
+	fc.Result = res
+	return ec.marshalOHomePage2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐHomePage(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_getHomePage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "cateogries":
+				return ec.fieldContext_HomePage_cateogries(ctx, field)
+			case "featuredEvents":
+				return ec.fieldContext_HomePage_featuredEvents(ctx, field)
+			case "nearBy":
+				return ec.fieldContext_HomePage_nearBy(ctx, field)
+			case "comingSoon":
+				return ec.fieldContext_HomePage_comingSoon(ctx, field)
+			case "trendingEvents":
+				return ec.fieldContext_HomePage_trendingEvents(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type HomePage", field.Name)
 		},
 	}
 	return fc, nil
@@ -3780,6 +4304,46 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** object.gotpl ****************************
 
+var categoryImplementors = []string{"Category"}
+
+func (ec *executionContext) _Category(ctx context.Context, sel ast.SelectionSet, obj *Category) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, categoryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Category")
+		case "id":
+			out.Values[i] = ec._Category_id(ctx, field, obj)
+		case "name":
+			out.Values[i] = ec._Category_name(ctx, field, obj)
+		case "icon":
+			out.Values[i] = ec._Category_icon(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var dateObjImplementors = []string{"DateObj"}
 
 func (ec *executionContext) _DateObj(ctx context.Context, sel ast.SelectionSet, obj *DateObj) graphql.Marshaler {
@@ -3914,6 +4478,50 @@ func (ec *executionContext) _FeatureObj(ctx context.Context, sel ast.SelectionSe
 	return out
 }
 
+var homePageImplementors = []string{"HomePage"}
+
+func (ec *executionContext) _HomePage(ctx context.Context, sel ast.SelectionSet, obj *HomePage) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, homePageImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("HomePage")
+		case "cateogries":
+			out.Values[i] = ec._HomePage_cateogries(ctx, field, obj)
+		case "featuredEvents":
+			out.Values[i] = ec._HomePage_featuredEvents(ctx, field, obj)
+		case "nearBy":
+			out.Values[i] = ec._HomePage_nearBy(ctx, field, obj)
+		case "comingSoon":
+			out.Values[i] = ec._HomePage_comingSoon(ctx, field, obj)
+		case "trendingEvents":
+			out.Values[i] = ec._HomePage_trendingEvents(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var locationObjImplementors = []string{"LocationObj"}
 
 func (ec *executionContext) _LocationObj(ctx context.Context, sel ast.SelectionSet, obj *LocationObj) graphql.Marshaler {
@@ -4008,6 +4616,25 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "getHomePage":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getHomePage(ctx, field)
 				return res
 			}
 
@@ -4842,6 +5469,54 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
+func (ec *executionContext) marshalOCategory2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategory(ctx context.Context, sel ast.SelectionSet, v []*Category) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOCategory2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategory(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOCategory2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategory(ctx context.Context, sel ast.SelectionSet, v *Category) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Category(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalODateObj2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDateObj(ctx context.Context, sel ast.SelectionSet, v *DateObj) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -4911,6 +5586,13 @@ func (ec *executionContext) marshalOFloat2ᚖfloat64(ctx context.Context, sel as
 	}
 	res := graphql.MarshalFloatContext(*v)
 	return graphql.WrapContextMarshaler(ctx, res)
+}
+
+func (ec *executionContext) marshalOHomePage2ᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐHomePage(ctx context.Context, sel ast.SelectionSet, v *HomePage) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._HomePage(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {

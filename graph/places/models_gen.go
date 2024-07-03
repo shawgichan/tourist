@@ -6,6 +6,12 @@ import (
 	"time"
 )
 
+type Category struct {
+	ID   *int    `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Icon *string `json:"icon,omitempty"`
+}
+
 type DateObj struct {
 	From *time.Time `json:"from,omitempty"`
 	To   *time.Time `json:"to,omitempty"`
@@ -29,6 +35,14 @@ type FeatureObj struct {
 	Icon  *string `json:"icon,omitempty"`
 	Name  *string `json:"name,omitempty"`
 	Value *string `json:"value,omitempty"`
+}
+
+type HomePage struct {
+	Cateogries     []*Category     `json:"cateogries,omitempty"`
+	FeaturedEvents []*SimEventsObj `json:"featuredEvents,omitempty"`
+	NearBy         []*SimEventsObj `json:"nearBy,omitempty"`
+	ComingSoon     []*SimEventsObj `json:"comingSoon,omitempty"`
+	TrendingEvents []*SimEventsObj `json:"trendingEvents,omitempty"`
 }
 
 type LocationObj struct {
