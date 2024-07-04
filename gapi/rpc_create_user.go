@@ -3,12 +3,15 @@ package gapi
 import (
 	"context"
 	"errors"
+	"time"
 
+	"github.com/hibiken/asynq"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/shawgichan/tourist/db/sqlc"
 	"github.com/shawgichan/tourist/pb"
 	"github.com/shawgichan/tourist/utils"
+	"github.com/shawgichan/tourist/worker"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -68,14 +71,20 @@ func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating user: %s", err)
 	}
-	// resp := registerResponse{
-	// 	Email:       user.Email,
-	// 	Username:    user.Username,
-	// 	Status:      user.Status,
-	// 	RolesID:     pgtype.Int8{},
-	// 	ProfilesID:  user.ProfilesID,
-	// 	UserTypesID: user.UserTypesID,
-	// }
+
+	//todo: use db transaction
+	taskPayload := &worker.PayloadSendVerifyEmail{
+		Username: user.Username,
+	}
+	opts := []asynq.Option{
+		asynq.MaxRetry(10),
+		asynq.ProcessIn(10 * time.Second),
+		asynq.Queue(worker.QueueCritical),
+	}
+	err = server.taskDistributor.DistributeTaskSendVerifyEmail(ctx, taskPayload, opts...)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to distribute task to send verify email: %s", err)
+	}
 	resp := &pb.CreateUserResponse{
 		User: &pb.User{
 			Username:          user.Username,
