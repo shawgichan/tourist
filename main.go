@@ -35,15 +35,15 @@ func main() {
 
 	pool := connect.ConnectToDb()
 	store := db.NewStore(pool)
-	redisOpt := asynq.RedisClientOpt{
-		Addr: os.Getenv("REDIS_ADDR"),
-	}
+	// redisOpt := asynq.RedisClientOpt{
+	// 	Addr: os.Getenv("REDIS_ADDR"),
+	// }
 
-	taskDistributor := worker.NewRedisTaskDistributor(redisOpt)
-	go runTaskProcessor(redisOpt, store)
-	go runGatewayServer(store, taskDistributor)
-	// runGinServer(store, pool)
-	runGrpcServer(store, taskDistributor)
+	//taskDistributor := worker.NewRedisTaskDistributor(redisOpt)
+	//go runTaskProcessor(redisOpt, store)
+	//go runGatewayServer(store, taskDistributor)
+	runGinServer(store, pool)
+	//runGrpcServer(store, taskDistributor)
 
 }
 
