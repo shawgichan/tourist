@@ -17,6 +17,8 @@ type Querier interface {
 	GetPlace(ctx context.Context, id int64) (Place, error)
 	GetPlaces(ctx context.Context) ([]Place, error)
 	GetUserByName(ctx context.Context, username string) (User, error)
+	GetUserStatus(ctx context.Context, id int64) (int64, error)
+	UpdateUserStatus(ctx context.Context, arg UpdateUserStatusParams) (User, error)
 }
 
 var _ Querier = (*Queries)(nil)

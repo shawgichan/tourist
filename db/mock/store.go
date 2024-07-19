@@ -159,3 +159,33 @@ func (mr *MockStoreMockRecorder) GetUserByName(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByName", reflect.TypeOf((*MockStore)(nil).GetUserByName), arg0, arg1)
 }
+
+// GetUserStatus mocks base method.
+func (m *MockStore) GetUserStatus(arg0 context.Context, arg1 int64) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserStatus", arg0, arg1)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserStatus indicates an expected call of GetUserStatus.
+func (mr *MockStoreMockRecorder) GetUserStatus(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserStatus", reflect.TypeOf((*MockStore)(nil).GetUserStatus), arg0, arg1)
+}
+
+// UpdateUserStatus mocks base method.
+func (m *MockStore) UpdateUserStatus(arg0 context.Context, arg1 db.UpdateUserStatusParams) (db.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateUserStatus", arg0, arg1)
+	ret0, _ := ret[0].(db.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateUserStatus indicates an expected call of UpdateUserStatus.
+func (mr *MockStoreMockRecorder) UpdateUserStatus(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUserStatus", reflect.TypeOf((*MockStore)(nil).UpdateUserStatus), arg0, arg1)
+}
