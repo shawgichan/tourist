@@ -44,3 +44,7 @@ SELECT status FROM users WHERE id = $1;
 
 -- name: UpdateUserStatus :one
 UPDATE users SET status = $2 WHERE id = $1 RETURNING *;
+
+
+-- name: GetAllUsers :many
+SELECT * FROM users;
