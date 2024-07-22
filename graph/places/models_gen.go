@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+type CategoriesPage struct {
+	Title  *string         `json:"title,omitempty"`
+	Events []*SimEventsObj `json:"events,omitempty"`
+}
+
 type Category struct {
 	ID   *int    `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`

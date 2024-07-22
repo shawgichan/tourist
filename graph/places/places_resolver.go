@@ -7,6 +7,10 @@ import (
 	"github.com/shawgichan/tourist/graph"
 )
 
+func (r *queryResolver) GetCategoriesPage(ctx context.Context) ([]CategoriesPage, error) {
+	return []CategoriesPage{}, nil
+
+}
 func (r *queryResolver) GetHomePage(ctx context.Context) (*HomePage, error) {
 	//query := graphql.GetOperationContext(ctx).RawQuery
 	//place, err := r.Store.GetPlace(ctx, int64(id))

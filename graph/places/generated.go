@@ -46,6 +46,11 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	CategoriesPage struct {
+		Events func(childComplexity int) int
+		Title  func(childComplexity int) int
+	}
+
 	Category struct {
 		ID   func(childComplexity int) int
 		Icon func(childComplexity int) int
@@ -93,6 +98,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		GetAllDetailsPage  func(childComplexity int) int
+		GetCategoriesPage  func(childComplexity int) int
 		GetDetailsPageByID func(childComplexity int, id int) int
 		GetHomePage        func(childComplexity int) int
 	}
@@ -117,6 +123,7 @@ type QueryResolver interface {
 	GetDetailsPageByID(ctx context.Context, id int) (*DetailsPage, error)
 	GetAllDetailsPage(ctx context.Context) ([]DetailsPage, error)
 	GetHomePage(ctx context.Context) (*HomePage, error)
+	GetCategoriesPage(ctx context.Context) ([]CategoriesPage, error)
 }
 
 type executableSchema struct {
@@ -137,6 +144,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e, 0, 0, nil}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "CategoriesPage.events":
+		if e.complexity.CategoriesPage.Events == nil {
+			break
+		}
+
+		return e.complexity.CategoriesPage.Events(childComplexity), true
+
+	case "CategoriesPage.title":
+		if e.complexity.CategoriesPage.Title == nil {
+			break
+		}
+
+		return e.complexity.CategoriesPage.Title(childComplexity), true
 
 	case "Category.id":
 		if e.complexity.Category.ID == nil {
@@ -333,6 +354,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.GetAllDetailsPage(childComplexity), true
+
+	case "Query.getCategoriesPage":
+		if e.complexity.Query.GetCategoriesPage == nil {
+			break
+		}
+
+		return e.complexity.Query.GetCategoriesPage(childComplexity), true
 
 	case "Query.getDetailsPageById":
 		if e.complexity.Query.GetDetailsPageByID == nil {
@@ -591,6 +619,102 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 // endregion ************************** directives.gotpl **************************
 
 // region    **************************** field.gotpl *****************************
+
+func (ec *executionContext) _CategoriesPage_title(ctx context.Context, field graphql.CollectedField, obj *CategoriesPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CategoriesPage_title(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CategoriesPage_title(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CategoriesPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _CategoriesPage_events(ctx context.Context, field graphql.CollectedField, obj *CategoriesPage) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_CategoriesPage_events(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Events, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*SimEventsObj)
+	fc.Result = res
+	return ec.marshalOSimEventsObj2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐSimEventsObj(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_CategoriesPage_events(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "CategoriesPage",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_SimEventsObj_id(ctx, field)
+			case "name":
+				return ec.fieldContext_SimEventsObj_name(ctx, field)
+			case "image":
+				return ec.fieldContext_SimEventsObj_image(ctx, field)
+			case "location":
+				return ec.fieldContext_SimEventsObj_location(ctx, field)
+			case "rating":
+				return ec.fieldContext_SimEventsObj_rating(ctx, field)
+			case "date":
+				return ec.fieldContext_SimEventsObj_date(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type SimEventsObj", field.Name)
+		},
+	}
+	return fc, nil
+}
 
 func (ec *executionContext) _Category_id(ctx context.Context, field graphql.CollectedField, obj *Category) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Category_id(ctx, field)
@@ -2006,6 +2130,53 @@ func (ec *executionContext) fieldContext_Query_getHomePage(_ context.Context, fi
 				return ec.fieldContext_HomePage_trendingEvents(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type HomePage", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_getCategoriesPage(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_getCategoriesPage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetCategoriesPage(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]CategoriesPage)
+	fc.Result = res
+	return ec.marshalOCategoriesPage2ᚕgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategoriesPageᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_getCategoriesPage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "title":
+				return ec.fieldContext_CategoriesPage_title(ctx, field)
+			case "events":
+				return ec.fieldContext_CategoriesPage_events(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CategoriesPage", field.Name)
 		},
 	}
 	return fc, nil
@@ -4304,6 +4475,44 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** object.gotpl ****************************
 
+var categoriesPageImplementors = []string{"CategoriesPage"}
+
+func (ec *executionContext) _CategoriesPage(ctx context.Context, sel ast.SelectionSet, obj *CategoriesPage) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, categoriesPageImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("CategoriesPage")
+		case "title":
+			out.Values[i] = ec._CategoriesPage_title(ctx, field, obj)
+		case "events":
+			out.Values[i] = ec._CategoriesPage_events(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var categoryImplementors = []string{"Category"}
 
 func (ec *executionContext) _Category(ctx context.Context, sel ast.SelectionSet, obj *Category) graphql.Marshaler {
@@ -4635,6 +4844,25 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_getHomePage(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "getCategoriesPage":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getCategoriesPage(ctx, field)
 				return res
 			}
 
@@ -5102,6 +5330,10 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) marshalNCategoriesPage2githubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategoriesPage(ctx context.Context, sel ast.SelectionSet, v CategoriesPage) graphql.Marshaler {
+	return ec._CategoriesPage(ctx, sel, &v)
+}
+
 func (ec *executionContext) marshalNDetailsPage2githubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐDetailsPage(ctx context.Context, sel ast.SelectionSet, v DetailsPage) graphql.Marshaler {
 	return ec._DetailsPage(ctx, sel, &v)
 }
@@ -5467,6 +5699,53 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOCategoriesPage2ᚕgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategoriesPageᚄ(ctx context.Context, sel ast.SelectionSet, v []CategoriesPage) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNCategoriesPage2githubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategoriesPage(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) marshalOCategory2ᚕᚖgithubᚗcomᚋshawgichanᚋtouristᚋgraphᚋplacesᚐCategory(ctx context.Context, sel ast.SelectionSet, v []*Category) graphql.Marshaler {

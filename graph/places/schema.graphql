@@ -57,11 +57,16 @@ type HomePage {
     comingSoon: [SimEventsObj],
     trendingEvents: [SimEventsObj],
 }
+type CategoriesPage {
+    title: String,
+    events: [SimEventsObj]
+}
 # Queries
 type Query {
     getDetailsPageById(id: Int!): DetailsPage!
     getAllDetailsPage: [DetailsPage!]!
     getHomePage: HomePage
+    getCategoriesPage :  [CategoriesPage!]
 }
 
 
