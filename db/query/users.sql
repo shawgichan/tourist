@@ -48,3 +48,6 @@ UPDATE users SET status = $2 WHERE id = $1 RETURNING *;
 
 -- name: GetAllUsers :many
 SELECT * FROM users;
+
+-- name: GetUserByEmail :one
+SELECT * FROM users WHERE email = $1;
