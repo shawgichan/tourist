@@ -18,6 +18,7 @@ require (
 	github.com/o1egl/paseto v1.0.0
 	github.com/rakyll/statik v0.1.7
 	github.com/rs/zerolog v1.33.0
+	github.com/stretchr/testify v1.9.0
 	github.com/subosito/gotenv v1.6.0
 	github.com/vektah/gqlparser/v2 v2.5.16
 	go.uber.org/mock v0.4.0
@@ -39,6 +40,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -65,6 +67,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/redis/go-redis/v9 v9.5.3 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
